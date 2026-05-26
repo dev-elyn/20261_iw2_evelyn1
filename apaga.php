@@ -2,11 +2,12 @@
 include 'conecta.php';
 include 'consulta.php';
 
+$id = $_POST['id'];
+$sql = "DELETE FROM tb_camisa WHERE cd_camisa = '$id'";
 
-$sql = "DELETE FROM 'tb_camisa' WHERE ID = '""'"
 if ($conn->exec($sql)) {
-    insere();
+    echo insere();
 } else {
-    echo "Erro ao concluir ";
-
+    echo "Erro ao concluir";
+}
 ?>

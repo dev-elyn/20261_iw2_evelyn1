@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loja de Camisetas</title>
+    <link rel="shortcut icon" href="favicon.ico?v=1" type="image/x-icon">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            $("#formulario").submit(function (e) {
+            $("#formulario").on("click", function (e) {
                 e.preventDefault()
 
                 let corSelecionada = $("#cor").val();
@@ -30,9 +31,27 @@
                 }).always(function () {
                     console.log("Concluído com sucesso");
                 });
+               });
+
+                $(document).on('click', '.excluir', function(){
+                    var id =$(this).attr("id");
+                    $.ajax({
+                    url: "apaga.php",
+                    type: "POST",
+                    data: { id: id },
+                    dataType: "html"
+
+                }).done(function (resposta) {
+                    $(".funciona").html(resposta);
+
+                }).fail(function (jqXHR, textStatus) {
+                    $(".funciona").html("Erro ao concluir" + textStatus);
+
+                }).always(function () {
+                    console.log("Concluído com sucesso");
+                });
 
             });
-
         });
 
     </script>
@@ -62,7 +81,7 @@
             </datalist>
             <input type="submit">
         </form>
-        <div class="funciona"> </div>
+        <div class="funciona"></div>
     </div>
 </body>
 </html>
