@@ -8,14 +8,15 @@ function insere(){
 
     while ($row = $stmt->fetchObject()) {
         $resultado .= "<tr>
-        <td>$row->sg_tamanho</td>
-        <td>$row->sg_cor </td> 
-        <td> <button type='button' class='excluir' data-id='$row->cd_camisa'>Excluir</button>
-        <button type='button' class='editar' data-id='$row->cd_camisa'>Editar</button>
+        <td class='p-3'>$row->sg_tamanho</td>
+        <td class='p-3'>$row->sg_cor </td> 
+        <td class='p-3'> <button type='button' class='btn btn-danger btn-sm mr-2 excluir' data-id='$row->cd_camisa'>Excluir</button>
+        <button type='button' class='btn btn-info btn-sm editar' data-id='$row->cd_camisa'>Editar</button>
         </td>
         </tr>";
     }
     $resultado .= "</table>";
     return $resultado;
 }
+echo insere();
 ?>

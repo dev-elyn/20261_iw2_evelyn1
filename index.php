@@ -66,25 +66,67 @@
                 });
             });
 
+            var id;
             // queria virar pro em sql php todas as linguagens de um dia para o outro mas eu preciso de paciência constância e foco aaaaaaaaaaaaaaa
-            $(document).on("click", ".editar", function(){
-                id = $(this).data("id");
-                $.ajax({
-                    url: "consulta_editar.php",
-                    type: "POST",
-                    data: {id : id},
-                    dataType: "json"
-                }).done(function(resposta){
-                    $("#cor_edit").val(resposta.nome);
-                    $("#tamanho_edit").val(resposta.distrito);
+            var id_editar;
 
-                    $("ModalEdit").modal("show");
-                }).fail(function(jqXHR, textStatus) {
-                    $("#resultado").html("Request failed: " + textStatus);
-                }).always(function(){
-                    console.log("completou busca de edicao");
-                });
+        $(document).on("click", ".editar", function () {
+            id_editar = $(this).data("id"); 
+            $.ajax({
+                url: "consulta_editar.php",
+                type: "POST",
+                data: { id: id_editar },
+                dataType: "json"
+            }).done(function (resposta) {
+                $("#cor_edit").val(resposta.sg_cor);
+                $("#tamanho_edit").val(resposta.sg_tamanho);
+                $("#ModalEdit").modal("show");
             });
+        });
+
+        $(document).on("submit", "#form_editar", function (e) {
+            e.preventDefault(); 
+            $.ajax({
+                url: "editar.php",
+                type: "POST",
+                data: {
+                    id: id_editar,
+                    cor: $("#cor_edit").val(),
+                    tamanho: $("#tamanho_edit").val()
+                },
+                dataType: "html"
+            }).done(function (resposta) {
+                $(".funciona").html(resposta); 
+                $("#ModalEdit").modal("hide"); 
+            });
+        });
+            
+            // nao aguento mais
+            $("#form_editar").on("submit", function (e) {
+            e.preventDefault();
+
+            let data = {
+                id: idEdicao,
+                cor: $("#cor_edit").val(),
+                tamanho: $("#tamanho_edit").val()
+            };
+
+            $.ajax({
+                url: "editar.php",
+                type: "POST",
+                data: {
+            id: id,                  // O id capturado no clique
+            cor: $("#cor_edit").val(),       // O valor do input de cor do modal
+            tamanho: $("#tamanho_edit").val()  // O valor do input de tamanho do modal
+        },
+                dataType: "html"
+            }).done(function (resposta) {
+                $(".funciona").html(resposta);
+                $("#ModalEdit").modal("hide"); 
+            }).fail(function (jqXHR, textStatus) {
+                console.log("Erro ao editar: " + textStatus);
+            });
+        });
 
         });
     </script>
@@ -138,6 +180,31 @@
           <button type="submit" class="btn btn-success" form="formulario">Enviar</button>
         </div>
         
+      </div>
+    </div>
+  </div>
+
+    <div class="modal fade" id="ModalEdit"> 
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Editar Informações</h4>
+        </div>
+        <div class="modal-body">
+          <div class="card" style="margin-top:0; height:auto; padding:20px;">
+            <form id="form_editar" method="post">
+                <label for="cor_edit">Selecione a cor</label>
+                <input type="text" id="cor_edit" name="cor" list="cores">
+
+                <br><label for="tamanho_edit">Selecione o tamanho</label>
+                <input type="text" id="tamanho_edit" name="tamanho" list="tamanhos">
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success" form="form_editar">Salvar Alterações</button>
+        </div>
       </div>
     </div>
   </div>
